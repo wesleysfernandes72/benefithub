@@ -29,6 +29,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**")
                         .permitAll()
 
+                        .requestMatchers("/users/**")
+                        .hasRole("ADMIN")
+
                         .anyRequest()
                         .authenticated()
                 )
