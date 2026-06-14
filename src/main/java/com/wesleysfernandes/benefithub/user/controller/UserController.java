@@ -2,6 +2,7 @@ package com.wesleysfernandes.benefithub.user.controller;
 
 
 import com.wesleysfernandes.benefithub.user.dto.CreateUserRequest;
+import com.wesleysfernandes.benefithub.user.dto.UserResponse;
 import com.wesleysfernandes.benefithub.user.entity.User;
 import com.wesleysfernandes.benefithub.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    public User create(
+    public UserResponse create(
             @RequestBody CreateUserRequest request
             ) {
         return service.create(request);

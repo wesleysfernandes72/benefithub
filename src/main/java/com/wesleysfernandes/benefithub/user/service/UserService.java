@@ -1,6 +1,7 @@
 package com.wesleysfernandes.benefithub.user.service;
 
 import com.wesleysfernandes.benefithub.user.dto.CreateUserRequest;
+import com.wesleysfernandes.benefithub.user.dto.UserResponse;
 import com.wesleysfernandes.benefithub.user.entity.User;
 import com.wesleysfernandes.benefithub.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,12 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public User create (CreateUserRequest request) {
+    public UserResponse create (CreateUserRequest request) {
+
+        repository.findByUsername(request.username())
+                .ifPresent(user -> {
+                    throw new RuntimeException("User already exists");
+                });
 
         User user = User.builder()
                 .username(request.username())
@@ -21,6 +27,12 @@ public class UserService {
                 .role(request.role())
                 .build();
 
-        return repository.save(user);
+        User savedUser = repository.save(user);
+
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getUsername(),
+                savedUser.getRole()
+        );
     }
 }
