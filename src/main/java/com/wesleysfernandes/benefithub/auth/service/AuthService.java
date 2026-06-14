@@ -23,17 +23,19 @@ public class AuthService {
                 .findByUsername(request.username())
                 .orElseThrow(() ->
                         new RuntimeException("User not found"));
+
         boolean passwordMatches =
                 passwordEncoder.matches(
                         request.password(),
                         user.getPassword()
                 );
 
-        if(!passwordMatches) {
+        if (!passwordMatches) {
             throw new RuntimeException("Invalid password");
         }
 
         String token = jwtService.generateToken(user);
+
         return new LoginResponse(token);
     }
 }
